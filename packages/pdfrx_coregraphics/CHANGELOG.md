@@ -1,3 +1,23 @@
+## 0.1.16
+
+- Updated to pdfrx_engine 0.3.9
+- NEW: `PdfrxEntryFunctions.stopBackgroundWorker()` support ([#184](https://github.com/espresso3389/pdfrx/issues/184), [#430](https://github.com/espresso3389/pdfrx/issues/430))
+
+## 0.1.15
+
+- Updated to pdfrx_engine 0.3.8
+- Implemented `PdfDocumentLoadCompleteEvent` for CoreGraphics backend
+
+## 0.1.12
+
+- FIXED: Inconsistent environment constraints - Flutter version now correctly requires 3.35.1+ to match Dart 3.9.0 requirement ([#553](https://github.com/espresso3389/pdfrx/issues/553))
+
+## 0.1.11
+
+- Updated to pdfrx_engine 0.3.7
+- Dependency configuration updates
+- WIP: Adding `PdfDocument.useNativeDocumentHandle`/`reloadPages`
+
 ## 0.1.10
 
 - Updated to pdfrx_engine 0.3.6

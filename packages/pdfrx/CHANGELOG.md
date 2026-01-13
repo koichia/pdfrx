@@ -1,3 +1,26 @@
+# 2.2.24
+
+- Updated to pdfrx_engine 0.3.9
+- NEW: `PdfrxEntryFunctions.stopBackgroundWorker()` to stop the background worker thread ([#184](https://github.com/espresso3389/pdfrx/issues/184), [#430](https://github.com/espresso3389/pdfrx/issues/430))
+
+# 2.2.23
+
+- pdfrx_engine 0.3.8
+- NEW: `onDocumentLoadFinished` callback in `PdfViewerParams` to notify when document loading completes (or fails)
+- Implemented `PdfDocumentLoadCompleteEvent` for WASM backend
+
+# 2.2.20
+
+- FIXED: Inconsistent environment constraints - Flutter version now correctly requires 3.35.1+ to match Dart 3.9.0 requirement ([#553](https://github.com/espresso3389/pdfrx/issues/553))
+
+# 2.2.19
+
+- Updated to pdfrx_engine 0.3.7 and pdfium_flutter 0.1.8
+- IMPROVED: Add `isDirty` flag to page image cache to prevent cache removal before re-rendering page ([#567](https://github.com/espresso3389/pdfrx/issues/567))
+- FIXED: `round10BitFrac` should not process `Infinity` or `NaN` ([#550](https://github.com/espresso3389/pdfrx/issues/550))
+- Updated Gradle wrapper to version 8.12 and Android plugin to version 8.9.1
+- WIP: Adding `PdfDocument.useNativeDocumentHandle`/`reloadPages`
+
 # 2.2.18
 
 - FIXED: Dependency conflicts with `dart_pubspec_licenses` causing version resolution failures ([#563](https://github.com/espresso3389/pdfrx/issues/563), [#570](https://github.com/espresso3389/pdfrx/issues/570))
