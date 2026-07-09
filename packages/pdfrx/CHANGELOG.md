@@ -1,3 +1,28 @@
+# 2.4.7
+
+- Updated to `pdfium_flutter` 0.2.3 so iOS/macOS Swift Package Manager support is recognized by Flutter and pub.dev.
+
+# 2.4.6
+
+- Updated to `pdfrx_engine` 0.4.5 to fix pub.dev documentation generation ([#664](https://github.com/espresso3389/pdfrx/issues/664)).
+- Updated to `pdfium_flutter` 0.2.3 so iOS/macOS Swift Package Manager support is recognized by Flutter and pub.dev.
+- Added dependency lower bounds required by the current API usage.
+
+# 2.4.5
+
+- Updated to `pdfrx_engine` 0.4.4.
+- FIXED: Text selection no longer treats generated spaces between distant text runs as huge selectable gaps.
+- FIXED: Free text-drag selection now starts at the initial touch-down position, avoiding skipped leading characters on touch devices.
+- FIXED: Text selection handles and context menus now keep stable widget identity when selection UI elements appear or disappear.
+- FIXED: Nullable cache access in PDF file caching.
+
+# 2.4.4
+
+- Updated to `pdfrx_engine` 0.4.3 and `pdfium_flutter` 0.2.2.
+- FIXED: `PdfViewer.selectAllText()` no longer attempts text selection before layout is available, avoiding a null-check crash ([#654](https://github.com/espresso3389/pdfrx/pull/654)).
+- FIXED: PDFium initialization is now tracked on the caller isolate, avoiding repeated initialization attempts after worker-isolate initialization ([#655](https://github.com/espresso3389/pdfrx/pull/655)).
+- Relaxed dependency constraints for broader compatibility with Flutter package resolution.
+
 # 2.4.3
 
 - FIXED: Cancel offscreen preview and partial page rendering requests to reduce memory spikes during rapid scrolling or dragging ([#604](https://github.com/espresso3389/pdfrx/issues/604), [#626](https://github.com/espresso3389/pdfrx/issues/626)).

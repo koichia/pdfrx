@@ -659,6 +659,13 @@ class _PdfViewerState extends State<PdfViewer>
                                       cursor: SystemMouseCursors.text,
                                       hitTestBehavior: HitTestBehavior.deferToChild,
                                       child: GestureDetector(
+                                        // Use DragStartBehavior.down so onPanStart reports the
+                                        // original pointer-down position instead of the post-slop
+                                        // position. With the default DragStartBehavior.start, free
+                                        // text-drag selection begins ~kTouchSlop (18px) after the
+                                        // touch-down, skipping the first 1-2 characters on touch
+                                        // devices (notably iPad/tablets).
+                                        dragStartBehavior: DragStartBehavior.down,
                                         onPanStart: enableSelectionHandles ? null : _onTextPanStart,
                                         onPanUpdate: enableSelectionHandles ? null : _onTextPanUpdate,
                                         onPanEnd: enableSelectionHandles ? null : _onTextPanEnd,
@@ -2820,6 +2827,9 @@ class _PdfViewerState extends State<PdfViewer>
         if (magnifier != null && !isPositionalWidget(magnifier)) {
           final offset = magnifierPosition;
           magnifier = AnimatedPositioned(
+            // Keyed so inserting/removing sibling selection widgets does not
+            // remount this subtree via keyless index matching.
+            key: const Key('pdfrxMagnifierPositioned'),
             duration: _previousMagnifierRect != null ? magnifierParams.animationDuration : Duration.zero,
             left: offset.dx,
             top: offset.dy,
@@ -2936,6 +2946,10 @@ class _PdfViewerState extends State<PdfViewer>
                   Offset.zero);
 
         contextMenu = Positioned(
+          // Keyed so appearing/disappearing selection handles do not remount
+          // the context menu subtree (losing its state) via keyless index
+          // matching of the surrounding Stack children.
+          key: const Key('pdfrxContextMenuPositioned'),
           left: offset.dx,
           top: offset.dy,
           child: WidgetSizeSniffer(
@@ -2959,6 +2973,7 @@ class _PdfViewerState extends State<PdfViewer>
     return [
       if (anchorA != null)
         Positioned(
+          key: const Key('pdfrxAnchorAPositioned'),
           left: aLeft,
           right: aRight,
           bottom: aBottom,
@@ -2984,6 +2999,7 @@ class _PdfViewerState extends State<PdfViewer>
         ),
       if (anchorB != null)
         Positioned(
+          key: const Key('pdfrxAnchorBPositioned'),
           left: bLeft,
           top: bTop,
           right: bRight,
@@ -3460,7 +3476,7 @@ class _PdfViewerState extends State<PdfViewer>
 
   @override
   Future<void> selectAllText() async {
-    if (_document!.pages.isEmpty && _layout != null) return;
+    if (_document!.pages.isEmpty || _layout == null) return;
     PdfPageText? first;
     for (var i = 1; i <= _document!.pages.length; i++) {
       final text = await _loadTextAsync(i);

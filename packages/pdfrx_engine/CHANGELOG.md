@@ -1,3 +1,24 @@
+## 0.4.6
+
+- FIXED: Windows ARM64 builds no longer fail on nullable PDF file cache access.
+- Added lower bounds for remaining dependencies required by package validation.
+
+## 0.4.5
+
+- FIXED: Removed a `@docImport` directive that could crash dartdoc 9.0.6 during pub.dev documentation generation ([#664](https://github.com/espresso3389/pdfrx/issues/664)).
+- Added dependency lower bounds required by the current API usage.
+
+## 0.4.4
+
+- FIXED: Text selection no longer treats generated spaces between distant text runs as huge selectable gaps.
+- FIXED: Nullable cache access in PDF file caching.
+
+## 0.4.3
+
+- Updated to `pdfium_dart` 0.2.5.
+- FIXED: PDFium initialization is now tracked on the caller isolate, avoiding repeated initialization attempts after worker-isolate initialization ([#655](https://github.com/espresso3389/pdfrx/pull/655)).
+- Relaxed dependency constraints for broader compatibility with Dart package resolution.
+
 ## 0.4.2
 
 - Updated to `pdfium_dart` 0.2.1 to fix PDFium loading in Flutter tests on macOS ([#640](https://github.com/espresso3389/pdfrx/issues/640)).
