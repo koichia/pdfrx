@@ -650,8 +650,8 @@ class _PdfViewerState extends State<PdfViewer>
                             child: GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onTapUp: (d) => _handleGeneralTap(d.globalPosition, PdfViewerGeneralTapType.tap),
-                              onDoubleTapDown: (d) =>
-                                  _handleGeneralTap(d.globalPosition, PdfViewerGeneralTapType.doubleTap),
+                              onDoubleTapDown: widget.params.doubleTapEnabled ? (d) =>
+                                  _handleGeneralTap(d.globalPosition, PdfViewerGeneralTapType.doubleTap) : null,
                               onLongPressStart: (d) =>
                                   _handleGeneralTap(d.globalPosition, PdfViewerGeneralTapType.longPress),
                               onSecondaryTapUp: (d) =>

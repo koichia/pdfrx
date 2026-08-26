@@ -98,6 +98,7 @@ class PdfViewerParams {
     this.interactionDelegateProvider = const PdfViewerScrollInteractionDelegateProviderInstant(),
     this.sizeDelegateProvider,
     this.zoomStepsDelegateProvider = const PdfViewerZoomStepsDelegateProviderDefault(),
+    this.doubleTapEnabled = true,
   }) : assert(
          sizeDelegateProvider == null ||
              (maxScale == null &&
@@ -677,6 +678,10 @@ class PdfViewerParams {
   /// Provider to create a delegate that generates zoom stops (snap points).
   final PdfViewerZoomStepsDelegateProvider zoomStepsDelegateProvider;
 
+  /// Enable/disable double tap. The default is true. If set to false, double tap is disabled and since
+  /// the system does not need to detect double tap, single tap events are fired more quickly.
+  final bool doubleTapEnabled;
+
   /// A convenience function to get platform-specific default scroll physics.
   ///
   /// On iOS/MacOS this is [BouncingScrollPhysics], and on Android this is [FixedOverscrollPhysics], a
@@ -754,7 +759,8 @@ class PdfViewerParams {
         other.scrollPhysics != scrollPhysics ||
         other.interactionDelegateProvider != interactionDelegateProvider ||
         other.sizeDelegateProvider != sizeDelegateProvider ||
-        other.zoomStepsDelegateProvider != zoomStepsDelegateProvider;
+        other.zoomStepsDelegateProvider != zoomStepsDelegateProvider ||
+        other.doubleTapEnabled != doubleTapEnabled;
   }
 
   @override
@@ -827,7 +833,8 @@ class PdfViewerParams {
         other.scrollPhysics == scrollPhysics &&
         other.interactionDelegateProvider == interactionDelegateProvider &&
         other.sizeDelegateProvider == sizeDelegateProvider &&
-        other.zoomStepsDelegateProvider == zoomStepsDelegateProvider;
+        other.zoomStepsDelegateProvider == zoomStepsDelegateProvider &&
+        other.doubleTapEnabled == doubleTapEnabled;
   }
 
   @override
@@ -898,7 +905,8 @@ class PdfViewerParams {
         scrollPhysics.hashCode ^
         interactionDelegateProvider.hashCode ^
         sizeDelegateProvider.hashCode ^
-        zoomStepsDelegateProvider.hashCode;
+        zoomStepsDelegateProvider.hashCode ^
+        doubleTapEnabled.hashCode;
   }
 }
 
