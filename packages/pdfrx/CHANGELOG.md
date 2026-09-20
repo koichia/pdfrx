@@ -1,3 +1,51 @@
+# 2.6.5
+
+- Simplified the README and Material UI migration guidance, with links to the official migration documentation.
+
+# 2.6.4
+
+- Placed Requirements after the complete Getting Started section in the README.
+
+# 2.6.3
+
+- Moved requirements and Material UI migration guidance into the Getting Started section of the README.
+
+# 2.6.2
+
+- Fixed context menu crashes when Material UI localizations are unavailable and preserved Flutter-localized menu labels ([#719](https://github.com/espresso3389/pdfrx/pull/719), [#721](https://github.com/espresso3389/pdfrx/pull/721)).
+- Fixed text selection handle scrolling and tracking ([#715](https://github.com/espresso3389/pdfrx/pull/715)).
+- Improved rendering responsiveness during progressive loading with `pdfrx_engine` 0.6.1.
+- Updated to `pdfium_flutter` 0.3.1 for PDFium download improvements.
+
+# 2.6.1
+
+- Fixed static analysis lints while preserving the existing public constructor parameter names.
+
+# 2.6.0
+
+- BREAKING: Raised the minimum requirements to Dart 3.13 and Flutter 3.47.
+- Updated to `pdfrx_engine` 0.6.0 and `pdfium_flutter` 0.3.0.
+- Added initial-page-aware measurement ordering for progressively loaded documents
+  ([#706](https://github.com/espresso3389/pdfrx/pull/706)).
+- Added `startPageNumber` documentation and test coverage for initial-page viewer setup
+  ([#706](https://github.com/espresso3389/pdfrx/pull/706)).
+- Fixed partial rendering scale for custom page layouts
+  ([#702](https://github.com/espresso3389/pdfrx/pull/702)).
+- Fixed canceled page previews so they can be rendered again.
+- Fixed WebAssembly rendering and text search edge cases.
+- Fixed a race while reading PDF data on Windows ([#595](https://github.com/espresso3389/pdfrx/issues/595)).
+
+# 2.5.0
+
+- Added optional on-demand page dimension loading for faster initial display of linearized PDFs over HTTP.
+- Improved initial-page prioritization and concurrent page measurement during progressive loading.
+- Added cached page-link loading to avoid repeated backend work.
+- Improved WebAssembly handling of sparse page metadata during progressive loading.
+- Improved WebAssembly cleanup when opening a document URL fails asynchronously.
+- Improved platform font loading so direct Windows release builds no longer stall or open to a blank page.
+- Migrated Material widgets to the standalone `material_ui` package and raised the minimum Flutter version to 3.47.
+- FIXED: Pages whose bitmaps were evicted before being fetched can be rendered again instead of remaining blank.
+
 # 2.4.8
 
 - Updated to `pdfrx_engine` 0.4.7.

@@ -1,3 +1,30 @@
+# 0.6.1
+
+- Improved rendering responsiveness during background work by prioritizing page rendering and visible-page measurement ([#708](https://github.com/espresso3389/pdfrx/pull/708)).
+- Improved progressive loading responsiveness by measuring pages in short chunks while preserving progress notification cadence ([#709](https://github.com/espresso3389/pdfrx/pull/709)).
+- Updated to `pdfium_dart` 0.3.1.
+
+## 0.6.0
+
+- BREAKING: Raised the minimum Dart SDK version to 3.13.
+- Updated to `pdfium_dart` 0.3.0.
+- Added initial-page-aware measurement ordering for progressively loaded documents
+  ([#706](https://github.com/espresso3389/pdfrx/pull/706)).
+- Fixed PDFium open errors being mistaken for password prompts
+  ([#707](https://github.com/espresso3389/pdfrx/pull/707)).
+- Fixed canceled page previews so they can be rendered again.
+- Fixed WebAssembly rendering and text search edge cases.
+- Fixed a race while reading PDF data on Windows ([#595](https://github.com/espresso3389/pdfrx/issues/595)).
+
+## 0.5.0
+
+- Added demand-paged loading support for linearized PDFs, allowing viewers to defer off-screen page measurements.
+- Added per-page link caching across native, Web, and Core Graphics backends.
+- Added asynchronous missing-font load completion and a way to wait for pending font loads.
+- Improved progressive loading so sparse page metadata remains available while a document is still loading.
+- Improved platform font lookup by resolving requested fonts on demand instead of eagerly scanning font directories.
+- FIXED: Native document buffers remain valid until asynchronous document opening completes.
+
 ## 0.4.7
 
 - FIXED: `BackgroundWorker.compute()` now supports genuinely asynchronous callbacks and propagates callback errors instead of hanging ([#693](https://github.com/espresso3389/pdfrx/pull/693)).

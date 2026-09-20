@@ -1,3 +1,16 @@
+# 0.3.1
+
+- Fixed PDFium downloads to honor macOS and Windows system proxy settings.
+- Improved PDFium download errors to include the HTTP status.
+
+## 0.3.0
+
+- BREAKING: Raised the minimum Dart SDK version to 3.13.
+- Added HarmonyOS support for loading an application-bundled `libpdfium.so`
+  ([#704](https://github.com/espresso3389/pdfrx/pull/704)).
+- Added environment and Windows system proxy support for PDFium downloads.
+- Added retries for transient PDFium download failures and retryable HTTP responses.
+
 ## 0.2.5
 
 - Relaxed dependency constraints for broader compatibility with Dart package resolution.

@@ -242,6 +242,7 @@ class PdfDocumentRefData extends PdfDocumentRef {
     this.firstAttemptByEmptyPassword = true,
     super.autoDispose = true,
     this.allowDataOwnershipTransfer = false,
+    this.maxSizeToCacheOnMemory,
     this.onDispose,
     this.useProgressiveLoading = true,
     PdfDocumentRefKey? key,
@@ -253,6 +254,11 @@ class PdfDocumentRefData extends PdfDocumentRef {
   @override
   final bool firstAttemptByEmptyPassword;
   final bool allowDataOwnershipTransfer;
+
+  /// Maximum PDF size to load directly into native memory. The native PDFium default is 1MB.
+  ///
+  /// Larger documents use on-demand reads. Non-native backends ignore this option.
+  final int? maxSizeToCacheOnMemory;
   final void Function()? onDispose;
 
   /// Whether to use progressive loading or not.
@@ -268,6 +274,7 @@ class PdfDocumentRefData extends PdfDocumentRef {
       useProgressiveLoading: useProgressiveLoading,
       sourceName: key.sourceName,
       allowDataOwnershipTransfer: allowDataOwnershipTransfer,
+      maxSizeToCacheOnMemory: maxSizeToCacheOnMemory,
       onDispose: onDispose,
     );
   }
@@ -464,6 +471,12 @@ class PdfDocumentListenable extends Listenable {
 
   void _releaseIfNoRefs() {
     if (_listeners.isEmpty && _additionalRefs == 0) {
+      if (Pdfrx.debugLazyLoading) {
+        pdfrxLazyLog(
+          'RELEASE last listener gone for ${ref.key} -- disposing the document and '
+          'evicting the listenable; the next resolve will re-download it',
+        );
+      }
       PdfDocumentRef._listenables.remove(ref);
       _release();
     }

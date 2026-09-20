@@ -4,6 +4,10 @@ Dart FFI bindings for the PDFium library. This package provides low-level access
 
 This package is part of the [pdfrx](https://github.com/espresso3389/pdfrx) project.
 
+## Requirements
+
+- Dart 3.13 or later
+
 ## Overview
 
 This package contains auto-generated FFI bindings for PDFium using [ffigen](https://pub.dev/packages/ffigen). It is designed to be a minimal, pure Dart package that other packages can depend on to access PDFium functionality.
@@ -59,6 +63,16 @@ The build hook downloads binaries from [bblanchon/pdfium-binaries](https://githu
 - Flutter apps on Linux look for `libpdfium.so` in the shared library directory relative to the resolved executable.
 - Other supported platforms first try the platform library name, then fall back to the bundled native asset recorded in `.dart_tool/native_assets.yaml`.
 
+### Download proxies
+
+The build hook honors the standard `http_proxy`, `https_proxy`, and `no_proxy` environment variables when it
+downloads PDFium. If no proxy environment variable is defined for the requested scheme, it falls back to the
+current user's static system proxy: `scutil --proxy` on macOS, and the Win32
+`WinHttpGetIEProxyConfigForCurrentUser` API on Windows. Explicit environment proxies take precedence, and
+`no_proxy`/`NO_PROXY` exclusions also apply when using a system proxy. System wildcard and local-host bypass
+rules are supported; CIDR bypass rules and automatic proxy configuration (PAC/WPAD) are not supported.
+Transient connection failures and HTTP 408, 429, and 5xx responses are retried with short backoff delays.
+
 ## Generating Bindings
 
 ### Prerequisites
@@ -108,5 +122,8 @@ The bindings are generated from PDFium headers using the `ffigen` configuration 
 | Linux    | x64, ARM64, ARM, x86 | ✅ |
 | Android  | ARM64, ARMv7, x86, x86_64 | ✅ |
 | macOS    | x64, ARM64  | ✅      |
+| HarmonyOS (OHOS) | ARM64 | ✅ (bring your own `libpdfium.so`) |
 
 **Note:** For Flutter applications, use [pdfium_flutter](https://pub.dev/packages/pdfium_flutter) unless you specifically need the lower-level Dart bindings directly. `pdfium_flutter` includes the Flutter deployment layer for all native platforms except Web.
+
+**HarmonyOS note:** the build hook does not download PDFium for OHOS targets. Bundle a `libpdfium.so` under the HAP's `libs/<abi>/` directory; the loader resolves it via a bare-name `dlopen` from the app's native library directory at runtime.
