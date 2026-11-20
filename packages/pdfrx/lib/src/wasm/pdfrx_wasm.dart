@@ -76,10 +76,13 @@ external String pdfiumWasmWorkerUrl;
 
 /// [PdfrxEntryFunctions] for PDFium WASM implementation.
 class PdfrxEntryFunctionsWasmImpl extends PdfrxEntryFunctions {
+  /// Asset path of the WASM modules bundled with pdfrx. Passed to `ui_web.assetManager.getAssetUrl`
+  static const _moduleAssetPath = 'packages/pdfrx/assets/';
+
   /// Default path to the WASM modules
   ///
   /// Normally, the WASM modules are provided by pdfrx_wasm package and this is the path to its assets.
-  static const defaultWasmModulePath = 'assets/packages/pdfrx/assets/';
+  static const defaultWasmModulePath = 'assets/$_moduleAssetPath';
 
   bool _initialized = false;
 
@@ -96,7 +99,7 @@ class PdfrxEntryFunctionsWasmImpl extends PdfrxEntryFunctions {
         ..charset = 'utf-8'
         ..async = true
         ..type = 'module'
-        ..src = _resolveUrl('pdfium_client.js', baseUrl: moduleUrl);
+        ..src = _resolveModuleFileUrl('pdfium_client.js', moduleUrl);
       web.document.querySelector('head')!.appendChild(script);
       final completer = Completer();
       final sub1 = script.onLoad.listen((_) => completer.complete());
@@ -146,14 +149,26 @@ class PdfrxEntryFunctionsWasmImpl extends PdfrxEntryFunctions {
   /// Workaround for Cross-Origin-Embedder-Policy restriction on WASM enabled environments
   String _getWorkerUrl() {
     final moduleUrl = _resolveUrl(Pdfrx.pdfiumWasmModulesUrl ?? defaultWasmModulePath);
-    final workerJsUrl = _resolveUrl('pdfium_worker.js', baseUrl: moduleUrl);
-    final pdfiumWasmUrl = _resolveUrl('pdfium.wasm', baseUrl: moduleUrl);
+    final workerJsUrl = _resolveModuleFileUrl('pdfium_worker.js', moduleUrl);
+    final pdfiumWasmUrl = _resolveModuleFileUrl('pdfium.wasm', moduleUrl);
     final content = 'const pdfiumWasmUrl="$pdfiumWasmUrl";importScripts("$workerJsUrl");';
     final blob = web.Blob(
       [content].jsify() as JSArray<web.BlobPart>,
       web.BlobPropertyBag(type: 'application/javascript'),
     );
     return web.URL.createObjectURL(blob);
+  }
+
+  /// Resolves [fileName] against [moduleUrl].
+  ///
+  /// If [moduleUrl] is the bundled assets directory ([defaultWasmModulePath]), [fileName] is obtained
+  /// through `ui_web.assetManager.getAssetUrl` so that it is compatible with the Web content hashing
+  /// option (`--web-content-hash`) introduced in Flutter 3.50; otherwise it is used as is.
+  static String _resolveModuleFileUrl(String fileName, String moduleUrl) {
+    final name = moduleUrl == _resolveUrl(defaultWasmModulePath)
+        ? Uri.parse(ui_web.assetManager.getAssetUrl('$_moduleAssetPath$fileName')).pathSegments.last
+        : fileName;
+    return _resolveUrl(name, baseUrl: moduleUrl);
   }
 
   /// Resolves the given [relativeUrl] against a base URL to produce an absolute URL.
